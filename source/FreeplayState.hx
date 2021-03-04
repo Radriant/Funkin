@@ -27,6 +27,8 @@ class FreeplayState extends MusicBeatState
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
+	
+	var trackedAssets:Array<Dynamic> = [];
 
 	private var iconArray:Array<HealthIcon> = [];
 
@@ -114,10 +116,11 @@ class FreeplayState extends MusicBeatState
 		add(diffText);
 
 		add(scoreText);
-
+		
+		unloadAssets();
 		changeSelection();
 		changeDiff();
-
+		
 		// FlxG.sound.playMusic(Paths.music('title'), 0);
 		// FlxG.sound.music.fadeIn(2, 0, 0.8);
 		selector = new FlxText();
@@ -300,6 +303,20 @@ class FreeplayState extends MusicBeatState
 	}
 }
 
+		
+	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
+	{
+		trackedAssets.insert(trackedAssets.length, Object);
+		return super.add(Object);
+	}
+
+	function unloadAssets():Void
+	{
+		for (asset in trackedAssets)
+		{
+			remove(asset);
+		}
+	}
 class SongMetadata
 {
 	public var songName:String = "";
